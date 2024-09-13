@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import Tiki from './components/tiki.ok';
 
+
 export default function App() {
 
   const [count, setCount] = useState<number>(0);
