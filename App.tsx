@@ -2,6 +2,8 @@ import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import Tiki from './components/tiki.ok';
+import Password from './components/password';
+
 
 
 export default function App() {
@@ -25,7 +27,8 @@ export default function App() {
     //     <Text>{JSON.stringify(arr)}</Text>
     //   </View>
     // </View>
-    <Tiki />
+    // <Tiki />
+    <Password />
   );
 }
 

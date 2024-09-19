@@ -5,10 +5,6 @@ const styles = StyleSheet.create({
     container: {
         // flex: 1,
         backgroundColor: 'lightgray',
-        borderWidth: 1,
-        borderColor: "red",
-        width: 400,
-        height: 700,
     },
 });
 const Tiki = () => {
@@ -33,7 +29,7 @@ const Tiki = () => {
         <View style={styles.container}>
             <View
                 style={{
-                    // flex: 2,
+                    flex: 3,
                     backgroundColor: "white",
                     paddingVertical: 20,
                 }}
@@ -172,8 +168,9 @@ const Tiki = () => {
                     flex: 0.1,
                     flexDirection: "row",
                     backgroundColor: "white",
-                    padding: 10,
+                    paddingHorizontal: 10,
                     marginVertical: 10,
+                    paddingVertical: 30,
                 }}
             >
                 <Text
