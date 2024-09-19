@@ -2,6 +2,7 @@
 import Checkbox from "expo-checkbox";
 import { useState } from "react";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native"
+import * as Crypto from 'expo-crypto';
 
 const styles = StyleSheet.create({
     container: {
@@ -11,7 +12,53 @@ const styles = StyleSheet.create({
 });
 
 const Password = () => {
-    const [isChecked, setChecked] = useState(false);
+    const [password, setPassword] = useState('');
+    const [passwordLength, setPasswordLength] = useState('');
+    const [isCheckedLower, setCheckedLower] = useState(false);
+    const [isCheckedUpper, setCheckedUpper] = useState(false);
+    const [isCheckedNumber, setCheckedNumber] = useState(false);
+    const [isCheckedSpecial, setCheckedSpecial] = useState(false);
+
+    const generatePassword = async () => {
+        if (+passwordLength < 1) {
+            setPassword('');
+            return;
+        }
+        let newPassword = '';
+        let count = 0;
+        const length = +passwordLength;  
+        
+        for (let i = 0; i < +passwordLength; i++) {
+            if(count >= length){
+                break;
+            }
+            if (isCheckedNumber) {
+                count++;
+                newPassword += Math.floor(Math.random() * 10);
+            }
+            if (isCheckedLower) {
+                count++;
+                const lower = 'abcdefghijklmnopqrstuvwxyz';
+                const index = Math.floor(Math.random() * lower.length);
+                newPassword += lower[index];
+            }
+            if (isCheckedUpper) {
+                count++;
+                const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                const index = Math.floor(Math.random() * upper.length);
+                newPassword += upper[index];
+            }
+            if (isCheckedSpecial) {
+                count++;
+                const special = '!@#$%^&*()_+';
+                const index = Math.floor(Math.random() * special.length);
+                newPassword += special[index];
+            }
+        }
+        newPassword = newPassword.split('').sort(() => Math.random() - 0.5).join('');
+        setPassword(newPassword.slice(0, length));
+    };
+
     return (
         <View style={styles.container}>
             <View style={{
@@ -49,7 +96,10 @@ const Password = () => {
                         height: 50,
                         color: "white",
                         fontSize: 20,
-                    }} />
+                    }}
+                        // readOnly={true}
+                        value={password}
+                    />
                 </View>
                 <View style={{
                     flex: 2,
@@ -66,10 +116,16 @@ const Password = () => {
                     </Text>
                     <TextInput style={{
                         backgroundColor: "#ffffff",
-                        fontSize: 10,
+                        fontSize: 20,
                         height: 30,
+                        width: 150,
                         fontWeight: 'bold',
-                    }} />
+                    }}
+                        keyboardType="numeric"
+                        inputMode="numeric"
+                        value={passwordLength.toString()}
+                        onChangeText={value => setPasswordLength(value)}
+                    />
                 </View>
                 <View style={{
                     flex: 2,
@@ -85,9 +141,9 @@ const Password = () => {
                         Include lower case letters
                     </Text>
                     <Checkbox
-                        value={isChecked}
-                        onValueChange={setChecked}
-                        color={isChecked ? '#000000' : undefined}
+                        value={isCheckedLower}
+                        onValueChange={setCheckedLower}
+                        color={isCheckedLower ? '#000000' : undefined}
                         style={{
                             padding: 15,
                         }}
@@ -107,9 +163,9 @@ const Password = () => {
                         Include upcase letters
                     </Text>
                     <Checkbox
-                        value={isChecked}
-                        onValueChange={setChecked}
-                        color={isChecked ? '#000000' : undefined}
+                        value={isCheckedUpper}
+                        onValueChange={setCheckedUpper}
+                        color={isCheckedUpper ? '#000000' : undefined}
                         style={{
                             padding: 15,
                         }}
@@ -129,9 +185,9 @@ const Password = () => {
                         Include number
                     </Text>
                     <Checkbox
-                        value={isChecked}
-                        onValueChange={setChecked}
-                        color={isChecked ? '#000000' : undefined}
+                        value={isCheckedNumber}
+                        onValueChange={setCheckedNumber}
+                        color={isCheckedNumber ? '#000000' : undefined}
                         style={{
                             padding: 15,
                         }}
@@ -151,9 +207,9 @@ const Password = () => {
                         Include special symbol
                     </Text>
                     <Checkbox
-                        value={isChecked}
-                        onValueChange={setChecked}
-                        color={isChecked ? '#000000' : undefined}
+                        value={isCheckedSpecial}
+                        onValueChange={setCheckedSpecial}
+                        color={isCheckedSpecial ? '#000000' : undefined}
                         style={{
                             padding: 15,
                         }}
@@ -176,7 +232,9 @@ const Password = () => {
                             fontSize: 20,
                             color: 'white',
                             fontWeight: 'bold',
-                        }}>
+                        }}
+                            onPress={generatePassword}
+                        >
                             GENERATE PASSWORD
                         </Text>
                     </View>
